@@ -33,7 +33,7 @@ const CreateCuisine = () => {
     const onSubmit = async (data) => {
         console.log("Form Data:", data);
         await axios.post(
-            "http://localhost:5000/api/cuisine",
+            `${process.env.NEXT_PUBLIC_API_URL}/api/cuisine`,
             data
         );
         reset();

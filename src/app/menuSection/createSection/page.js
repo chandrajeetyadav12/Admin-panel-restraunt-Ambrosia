@@ -46,7 +46,7 @@ export default function CreateMenuSec() {
   //  Submit menu section
   const onSubmit = async (formData) => {
     console.log(formData)
-    await fetch("http://localhost:5000/api/menuSection", {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menuSection`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
