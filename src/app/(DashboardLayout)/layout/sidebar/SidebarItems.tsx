@@ -73,9 +73,17 @@ const SidebarItems = () => {
 
   return (
     < >
-      <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#5D87FF"} themeSecondaryColor={'#49beff'} >
+      <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#eb0029"} themeSecondaryColor={'#fff'} >
 
-        <Logo img='/images/logos/dark-logo.svg' component={Link} to="/" >Ambrosia Starbuds</Logo>
+        <Logo img='/images/logos/logo.svg'
+          imgProps={{
+            sx: {
+              width: "100px",
+              height: "100px",
+              objectFit: "contain",
+            }
+          }}
+          component={Link} to="/" >Ambrosia Starbuds</Logo>
 
         {renderMenuItems(Menuitems, pathDirect)}
         <Box px={2}>

@@ -85,7 +85,7 @@ const Profile = () => {
           <Button
             href="/authentication/login"
             variant="outlined"
-            color="primary"
+            sx={{backgroundColor:"#eb0029",color:"#fff"}}
             component={Link}
             fullWidth
           >

@@ -7,10 +7,10 @@ import Profile from './Profile';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
 
 interface ItemType {
-  toggleMobileSidebar:  (event: React.MouseEvent<HTMLElement>) => void;
+  toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const Header = ({toggleMobileSidebar}: ItemType) => {
+const Header = ({ toggleMobileSidebar }: ItemType) => {
 
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -55,14 +55,23 @@ const Header = ({toggleMobileSidebar}: ItemType) => {
           aria-controls="msgs-menu"
           aria-haspopup="true"
         >
-          <Badge variant="dot" color="primary">
+          <Badge variant="dot"
+            sx={{
+              "& .MuiBadge-dot": {
+                backgroundColor: "#eb0029",
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+              },
+            }}
+          >
             <IconBellRinging size="21" stroke="1.5" />
           </Badge>
 
         </IconButton>
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button variant="contained" component={Link} href="/authentication/login"   disableElevation color="primary" >
+          <Button variant="contained" component={Link} href="/authentication/login" disableElevation sx={{ backgroundColor: "#eb0029", color: "#fff" }} >
             Login
           </Button>
           <Profile />
