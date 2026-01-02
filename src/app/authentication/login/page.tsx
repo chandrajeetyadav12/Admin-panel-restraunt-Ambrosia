@@ -70,7 +70,7 @@ const Login2 = () => {
                       variant="h6"
                       fontWeight="500"
                     >
-                      New to Modernize?
+                      New to Ambrosia Starbuds Cafe Food?
                     </Typography>
                     <Typography
                       component={Link}
@@ -78,7 +78,7 @@ const Login2 = () => {
                       fontWeight="500"
                       sx={{
                         textDecoration: "none",
-                        color: "primary.main",
+                        color: "#e66f15",
                       }}
                     >
                       Create an account

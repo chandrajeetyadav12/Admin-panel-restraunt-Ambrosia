@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import Menuitems from "./MenuItems";
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 import {
   Logo,
   Sidebar as MUI_Sidebar,
@@ -73,17 +75,31 @@ const SidebarItems = () => {
 
   return (
     < >
-      <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#eb0029"} themeSecondaryColor={'#fff'} >
-
-        <Logo img='/images/logos/logo.svg'
-          imgProps={{
-            sx: {
-              width: "100px",
-              height: "100px",
-              objectFit: "contain",
-            }
+      <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#e66f15"} themeSecondaryColor={'#fff'} >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "20px 0",
           }}
-          component={Link} to="/" >Ambrosia Starbuds</Logo>
+        >
+          <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
+            <Image
+              src="/images/logos/logo.svg"
+              alt="logo"
+              width={190}
+              height={80}
+              priority
+              style={{
+                objectFit: "contain",
+                maxWidth: "100%",
+                height: "auto",
+              }}
+            />
+          </Link>
+        </Box>
 
         {renderMenuItems(Menuitems, pathDirect)}
         <Box px={2}>

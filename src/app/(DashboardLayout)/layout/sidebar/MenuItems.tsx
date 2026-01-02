@@ -25,7 +25,7 @@ const Menuitems = [
     {
     id: uniqueId(),
     title: "AddCuisine",
-    icon: IconLayoutDashboard,
+    icon: IconTypography,
     href: "/cuisine/create",
   },
       {
@@ -37,7 +37,7 @@ const Menuitems = [
         {
     id: uniqueId(),
     title: "AddMenuItem",
-    icon: IconLayoutDashboard,
+    icon: IconAperture,
     href: "/menuItem/createMenuItem",
   },
       {

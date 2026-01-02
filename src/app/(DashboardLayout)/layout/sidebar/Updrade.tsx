@@ -8,12 +8,18 @@ export const Upgrade = () => {
             display='flex'
             alignItems="center"
             gap={2}
-            sx={{ mt: 3, p: 3, bgcolor: 'primary.light', borderRadius: '8px' }}
+            sx={{ mt: 3, p: 3, bgcolor: '#eddfd5', borderRadius: '8px' }}
         >
             <>
                 <Box >
                     <Typography variant="h5" sx={{ width: "80px" }} fontSize='16px' mb={1}>Haven&apos;t account ?</Typography>
-                    <Button color="primary" target="_blank" disableElevation component={Link} href="/authentication/register" variant="contained" aria-label="logout" size="small">
+                    <Button 
+                    sx={{
+                        textDecoration: "none",
+                        color: "#fff",
+                        backgroundColor:"#e66f15"
+                      }}
+                    target="_blank" disableElevation component={Link} href="/authentication/register" variant="contained" aria-label="logout" size="small">
                         Sign Up
                     </Button>
                 </Box>

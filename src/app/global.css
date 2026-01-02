@@ -1,3 +1,47 @@
 *{
      font-family: 'Plus Jakarta Sans', Helvetica, Arial, sans-serif !important;
 }
+.form-control:focus {
+  border-color: #e66f15 !important;
+  box-shadow: 0 0 0 0.2rem rgba(230, 111, 21, 0.25) !important;
+}
+.form-check-input:focus {
+  border-color: #e66f15 !important;
+  box-shadow: 0 0 0 0.2rem rgba(230, 111, 21, 0.25) !important;
+}
+/* Checkbox checked */
+.form-check-input:checked {
+  background-color: #e66f15 !important;
+  border-color: #e66f15 !important;
+}
+.btn-primary {
+  background-color: #e66f15 !important;
+  border-color: #e66f15 !important;
+}
+
+.btn-primary:hover {
+  background-color: #cf5f12 !important;
+  border-color: #cf5f12 !important;
+}
+
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:focus-visible {
+  background-color: #e66f15 !important;
+  border-color: #e66f15 !important;
+  box-shadow: 0 0 0 0.25rem rgba(230, 111, 21, 0.35) !important;
+}
+/* Select focus */
+.form-select:focus {
+  border-color: #e66f15 !important;
+  box-shadow: 0 0 0 0.2rem rgba(230, 111, 21, 0.25) !important;
+}
+.form-select option:checked {
+  background-color: #e66f15 !important;
+  color: #fff;
+}
+.form-select option:checked:hover {
+  background-color: #e66f15 !important;
+  color: #fff;
+}
+

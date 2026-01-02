@@ -70,16 +70,16 @@ const Register2 = () => (
                   >
                     Already have an Account?
                   </Typography>
-                  <Typography
-                    component={Link}
-                    href="/authentication/login"
-                    fontWeight="500"
-                    sx={{
-                      textDecoration: "none",
-                      color: "primary.main",
-                    }}
-                  >
-                    Sign In
+                  <Typography fontWeight={500}>
+                    <Link
+                      href="/authentication/login"
+                      style={{
+                        textDecoration: "none",
+                        color: "#fc791a", 
+                      }}
+                    >
+                      Sign In
+                    </Link>
                   </Typography>
                 </Stack>
               }

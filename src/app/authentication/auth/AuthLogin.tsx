@@ -61,7 +61,14 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => (
       >
         <FormGroup>
           <FormControlLabel
-            control={<Checkbox defaultChecked />}
+            control={<Checkbox defaultChecked
+              sx={{
+                color: "#e66f15",
+                "&.Mui-checked": {
+                  color: "#e66f15",
+                },
+              }}
+            />}
             label="Remeber this Device"
           />
         </FormGroup>
@@ -71,7 +78,7 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => (
           fontWeight="500"
           sx={{
             textDecoration: "none",
-            color: "primary.main",
+            color: "#e66f15",
           }}
         >
           Forgot Password ?
@@ -80,15 +87,23 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => (
     </Stack>
     <Box>
       <Button
-        color="primary"
         variant="contained"
         size="large"
         fullWidth
-        component={Link}
-        href="/"
-        type="submit"
+        type="button"
+        sx={{
+          backgroundColor: "#fc791a",
+          "&:hover": {
+            backgroundColor: "#e66f15",
+          },
+        }}
       >
-        Sign In
+        <Link
+          href="/"
+          style={{ textDecoration: "none", color: "inherit", width: "100%" }}
+        >
+          Sign In
+        </Link>
       </Button>
     </Box>
     {subtitle}

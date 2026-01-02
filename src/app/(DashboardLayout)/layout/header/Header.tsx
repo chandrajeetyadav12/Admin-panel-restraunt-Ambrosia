@@ -58,7 +58,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
           <Badge variant="dot"
             sx={{
               "& .MuiBadge-dot": {
-                backgroundColor: "#eb0029",
+                backgroundColor: "#e66f15",
                 width: 8,
                 height: 8,
                 borderRadius: "50%",
@@ -71,7 +71,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </IconButton>
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button variant="contained" component={Link} href="/authentication/login" disableElevation sx={{ backgroundColor: "#eb0029", color: "#fff" }} >
+          <Button variant="contained" component={Link} href="/authentication/login" disableElevation sx={{ backgroundColor: "#e66f15", color: "#fff" }} >
             Login
           </Button>
           <Profile />
