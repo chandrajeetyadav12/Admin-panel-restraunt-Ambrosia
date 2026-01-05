@@ -44,7 +44,7 @@ const Login2 = () => {
               elevation={9}
               sx={{ p: 4, zIndex: 1, width: "100%", maxWidth: "500px" }}
             >
-              <Box display="flex" alignItems="center" justifyContent="center">
+              <Box display="flex" alignItems="center" justifyContent="center" sx={{backgroundColor:"#111",width:"100%"}}>
                 <Logo />
               </Box>
               <AuthLogin
@@ -53,9 +53,9 @@ const Login2 = () => {
                     variant="subtitle1"
                     textAlign="center"
                     color="textSecondary"
-                    mb={1}
+                    my={1}
                   >
-                    Your Social Campaigns
+                    Sigin to Ambrosia Starbuds Cafe
                   </Typography>
                 }
                 subtitle={

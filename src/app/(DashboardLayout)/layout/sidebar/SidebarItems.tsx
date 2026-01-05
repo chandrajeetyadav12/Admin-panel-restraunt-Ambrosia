@@ -83,6 +83,7 @@ const SidebarItems = () => {
             justifyContent: "center",
             alignItems: "center",
             padding: "20px 0",
+            backgroundColor:"#111"
           }}
         >
           <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>

@@ -1,9 +1,9 @@
 import {
   IconAperture,
-  IconCopy,
+  // IconCopy,
   IconLayoutDashboard,
   IconLogin,
-  IconMoodHappy,
+  // IconMoodHappy,
   IconTypography,
   IconUserPlus,
 } from "@tabler/icons-react";
@@ -40,12 +40,12 @@ const Menuitems = [
     icon: IconAperture,
     href: "/menuItem/createMenuItem",
   },
-      {
-    id: uniqueId(),
-    title: "AddMenuItems",
-    icon: IconLayoutDashboard,
-    href: "/",
-  },
+  //     {
+  //   id: uniqueId(),
+  //   title: "AddMenuItems",
+  //   icon: IconLayoutDashboard,
+  //   href: "/",
+  // },
   // {
   //   navlabel: true,
   //   subheader: "UTILITIES ",

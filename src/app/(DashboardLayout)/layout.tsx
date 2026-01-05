@@ -36,6 +36,7 @@ export default function RootLayout({
       {/* Sidebar */}
       {/* ------------------------------------------- */}
       <Sidebar
+      
         isSidebarOpen={isSidebarOpen}
         isMobileSidebarOpen={isMobileSidebarOpen}
         onSidebarClose={() => setMobileSidebarOpen(false)}

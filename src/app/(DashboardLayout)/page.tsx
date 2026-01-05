@@ -8,20 +8,20 @@ import RecentTransactions from '@/app/(DashboardLayout)/components/dashboard/Rec
 import ProductPerformance from '@/app/(DashboardLayout)/components/dashboard/ProductPerformance';
 import Blog from '@/app/(DashboardLayout)/components/dashboard/Blog';
 import MonthlyEarnings from '@/app/(DashboardLayout)/components/dashboard/MonthlyEarnings';
-
+import AdminMenuPage from '@/app/(DashboardLayout)/components/menu/page'
 const Dashboard = () => {
   return (
-    <PageContainer title="Dashboard" description="this is Dashboard">
+    <PageContainer title="Ambrosia Starbuds cafe Dashboard" description="This is Ambrosia Starbuds cafe Dashboard">
       <Box>
         <Grid container spacing={3}>
           <Grid
             size={{
               xs: 12,
-              lg: 8
+              lg: 12
             }}>
-            <SalesOverview />
+            <AdminMenuPage />
           </Grid>
-          <Grid
+          {/* <Grid
             size={{
               xs: 12,
               lg: 4
@@ -34,23 +34,23 @@ const Dashboard = () => {
                 <MonthlyEarnings />
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid
             size={{
               xs: 12,
               lg: 4
             }}>
-            <RecentTransactions />
+            {/* <RecentTransactions /> */}
           </Grid>
           <Grid
             size={{
               xs: 12,
               lg: 8
             }}>
-            <ProductPerformance />
+            {/* <ProductPerformance /> */}
           </Grid>
           <Grid size={12}>
-            <Blog />
+            {/* <Blog /> */}
           </Grid>
         </Grid>
       </Box>

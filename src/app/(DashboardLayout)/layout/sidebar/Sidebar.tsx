@@ -25,7 +25,7 @@ const MSidebar = ({
 
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#eff2f7',
+      backgroundColor: '#111',
       borderRadius: '15px',
     },
   };
@@ -62,6 +62,8 @@ const MSidebar = ({
           <Box
             sx={{
               height: "100%",
+          // backgroundColor:"#111"
+
             }}
           >
 
