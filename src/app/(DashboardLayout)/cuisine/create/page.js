@@ -1,106 +1,124 @@
-"use client"
+"use client";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+
 export const cuisineSchema = yup.object({
-    name: yup
-        .string()
-        .required("Cuisine name is required")
-        .min(2, "Name must be at least 2 characters"),
-
-    description: yup
-        .string()
-        .max(200, "Description should not exceed 200 characters"),
-
-    isActive: yup.boolean(),
+  name: yup.string().required("Cuisine name is required").min(2),
+  description: yup.string().max(200),
+  isActive: yup.boolean(),
 });
-const CreateCuisine = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-        reset,
-    } = useForm({
-        resolver: yupResolver(cuisineSchema),
-        defaultValues: {
-            name: "",
-            description: "",
-            isActive: true,
-        },
-    });
 
-    const onSubmit = async (data) => {
-        console.log("Form Data:", data);
-        await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/cuisine`,
-            data
-        );
-        reset();
+const CreateCuisine = ({ onClose }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm({
+    resolver: yupResolver(cuisineSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      isActive: true,
+    },
+  });
+
+  //
+  useEffect(() => {
+    document.body.classList.add("modal-open");
+
+    return () => {
+      document.body.classList.remove("modal-open");
     };
+  }, []);
 
-    return (
-        <div className="container mt-4">
-            <div className="card shadow-sm">
-                <div className="card-body">
-                    <h5 className="card-title mb-3">Add Cuisine</h5>
-
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        {/* Name */}
-                        <div className="mb-3">
-                            <label className="form-label">Cuisine Name</label>
-                            <input
-                                type="text"
-                                className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                                {...register("name")}
-                                placeholder="Enter cuisine name"
-                            />
-                            <div className="invalid-feedback">
-                                {errors.name?.message}
-                            </div>
-                        </div>
-
-                        {/* Description */}
-                        <div className="mb-3">
-                            <label className="form-label">Description</label>
-                            <textarea
-                                className={`form-control ${errors.description ? "is-invalid" : ""
-                                    }`}
-                                {...register("description")}
-                                placeholder="Optional description"
-                                rows={3}
-                            />
-                            <div className="invalid-feedback">
-                                {errors.description?.message}
-                            </div>
-                        </div>
-
-                        {/* isActive */}
-                        <div className="form-check mb-3">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                id="isActive"
-                                {...register("isActive")}
-                            />
-                            <label className="form-check-label" htmlFor="isActive">
-                                Active
-                            </label>
-                        </div>
-
-                        {/* Submit */}
-                        <button
-                            type="submit"
-                            className="btn btn-primary"
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? "Saving..." : "Save Cuisine"}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+  const onSubmit = async (data) => {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/cuisine`,
+      data
     );
+    reset();
+    onClose();
+  };
+
+  return (
+    <>
+      <div className="modal fade show" style={{ display: "block" }} tabIndex="-1">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Add Cuisine</h5>
+              <button className="btn-close" onClick={onClose}></button>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="modal-body">
+                {/* Name */}
+                <div className="mb-3">
+                  <label className="form-label">Cuisine Name</label>
+                  <input
+                    className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                    {...register("name")}
+                  />
+                  <div className="invalid-feedback">
+                    {errors.name?.message}
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="mb-3">
+                  <label className="form-label">Description</label>
+                  <textarea
+                    className={`form-control ${
+                      errors.description ? "is-invalid" : ""
+                    }`}
+                    {...register("description")}
+                    rows={3}
+                  />
+                </div>
+
+                {/* Active */}
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    {...register("isActive")}
+                  />
+                  <label className="form-check-label">Active</label>
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={onClose}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Saving..." : "Save Cuisine"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/*  Correct Backdrop */}
+      <div className="modal-backdrop fade show"></div>
+    </>
+  );
 };
 
 export default CreateCuisine;
+
+
+

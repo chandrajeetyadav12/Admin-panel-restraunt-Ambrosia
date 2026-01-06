@@ -3,7 +3,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from "@mui/material/IconButton";
+import CreateCuisine from "@/app/(DashboardLayout)/cuisine/create/page"
+import CreateMenuSecModal from "@/app/(DashboardLayout)/menuSection/createSection/page"
+import CreateMenuItemModal from "@/app/(DashboardLayout)/menuItem/createMenuItem/page"
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 export default function AdminMenuPage() {
+    const [showModal, setShowModal] = useState(false);
+    const [showMenuSectionModal, setshowMenuSectionModal] = useState(false);
+    const [showMenuItemsModal, setshowMenuItemsModal] = useState(false);
+
+
     const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
     /* ================= STATE ================= */
@@ -123,22 +134,72 @@ export default function AdminMenuPage() {
     /* ================= UI ================= */
     return (
         <div className="admin-container">
-            <h1>Menu Management</h1>
+            <h2 className="heading">Menu Management</h2>
+
+            <ul className="menus_items_list">
+                <Button
+                    startIcon={<AddIcon />}
+                    onClick={() => setShowModal(true)}
+                    fullWidth
+                    sx={{ justifyContent: "flex-start",color:"#000" }}
+                >
+                    Cuisine
+                </Button>
+                <Button
+                    startIcon={<AddIcon />}
+                    onClick={() => setshowMenuSectionModal(true)}
+                    fullWidth
+                    sx={{ justifyContent: "flex-start",color:"#000" }}
+                >
+                    Menu Section
+                </Button>
+                <Button
+                    startIcon={<AddIcon />}
+                    onClick={() => setshowMenuItemsModal(true)}
+                    fullWidth
+                    sx={{ justifyContent: "flex-start",color:"#000" }}
+                >
+                    Menu Items
+                </Button>
+                {/* <li onClick={() => setShowModal(true)}>Add Cuisine</li>
+                <li onClick={() => setshowMenuSectionModal(true)}>Add Menu Section</li>
+                <li onClick={() => setshowMenuItemsModal(true)}>Add Menu Items</li> */}
+
+            </ul>
+            <div className="addcuisine">
+                {showModal && (
+                    <CreateCuisine onClose={() => setShowModal(false)} />
+                )}
+            </div>
+            <div className="addmenusection">
+                {showMenuSectionModal && (
+                    <CreateMenuSecModal onClose={() => setshowMenuSectionModal(false)} />
+                )}
+            </div>
+            <div className="addmenuitems">
+                {showMenuItemsModal && (
+                    <CreateMenuItemModal onClose={() => setshowMenuItemsModal(false)} />
+                )}
+            </div>
 
             {error && <p className="error">{error}</p>}
 
             {/* CUISINES */}
-            <div className="cuisine-list">
-                {cuisines.map((c) => (
-                    <button
-                        key={c._id}
-                        className={`cuisine-btn ${selectedCuisine?._id === c._id ? "active" : ""
-                            }`}
-                        onClick={() => handleCuisineSelect(c)}
-                    >
-                        {c.name}
-                    </button>
-                ))}
+            <div className="">
+                <h5 className="my-4">Select a cuisine to edit and delete menu items</h5>
+                <ul className="cuisine-list">
+                    {cuisines.map((c) => (
+                        <li
+                            key={c._id}
+                            className={`cuisine-btn ${selectedCuisine?._id === c._id ? "active" : ""
+                                }`}
+                            onClick={() => handleCuisineSelect(c)}
+                        >
+                            {c.name}
+                        </li>
+                    ))}
+                </ul>
+
             </div>
 
             {loading && <p>Loading menu...</p>}
@@ -151,12 +212,11 @@ export default function AdminMenuPage() {
 
                         {Object.entries(section.items).map(([sub, items]) => (
                             <div key={sub}>
-                                <h4>{sub}</h4>
+                                <h5 className="my-2">{sub}</h5>
 
                                 {items.map((item) => (
                                     <div className="menu-item" key={item._id}>
                                         <img
-                                            //   src={`${BASE_URL}${item.image}`}
                                             src={item.image}
                                             alt={item.name}
                                             className="menu-img"
@@ -165,23 +225,28 @@ export default function AdminMenuPage() {
                                         <div className="menu-info">
                                             <b>{item.name}</b> – ₹{item.price}
                                         </div>
-                                        <EditIcon
-                                        sx={{color:"green"}}
-                                        onClick={() =>
-                                            openEditModal(item, section.sectionId)
-                                        }>Edit</EditIcon>
-                                      
-                                        <DeleteIcon
-                                        sx={{ color: "red" }}
-                                        onClick={() => handleDeleteItem(item._id)}
-                                        >
-                                            {deletingId === item._id ?
-                                                "Deleting..."
-                                                :
-                                                "Delete"
+                                        <IconButton
+                                            sx={{ color: "green" }}
+                                            onClick={() =>
+                                                openEditModal(item, section.sectionId)
                                             }
-                                        </DeleteIcon>
-                                       
+                                        >
+                                            <EditIcon>Edit</EditIcon>
+                                        </IconButton>
+
+                                        <IconButton
+                                            sx={{ color: "red" }}
+                                            onClick={() => handleDeleteItem(item._id)}
+                                        >
+                                            <DeleteIcon
+                                            >
+                                                {deletingId === item._id ?
+                                                    "Deleting..."
+                                                    :
+                                                    "Delete"
+                                                }
+                                            </DeleteIcon>
+                                        </IconButton>
                                     </div>
                                 ))}
                             </div>

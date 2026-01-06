@@ -59,19 +59,22 @@
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  list-style: none;
+  padding-left: 0px;
 }
 
 .cuisine-btn {
-  padding: 8px 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  color: #000;
+  font-weight: 600;
   background: #fff;
   cursor: pointer;
+  line-height: 30px;
+  border-right: 1.5px dotted #b7b72d;
+  padding-right: 10px;
 }
 
 .cuisine-btn.active {
-  background: #222;
-  color: #fff;
+  color: red;
 }
 
 /* MENU */
@@ -130,7 +133,7 @@
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 300px;
+  width: 360px;
 }
 
 .modal-box input {
@@ -144,7 +147,28 @@
   display: flex;
   gap: 5px;
 }
+.menus_items_list{
+  display: flex;
+  list-style: none;
+  gap: 12px;
+  padding-left: 0px;
+}
+.menus_items_list li{
+  cursor: pointer;
+  border-right: 1.5px dotted #666;
+  line-height: 30px;
+  padding-right: 10px;
+  font-weight: 700;
+  color: #000;
+}
 
+.modal {
+  z-index: 9999 !important;
+}
+
+.modal-backdrop {
+  z-index: 9998 !important;
+}
 
 
 
