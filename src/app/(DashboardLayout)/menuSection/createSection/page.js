@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -32,16 +31,16 @@ export default function CreateMenuSecModal({ onClose }) {
     },
   });
 
-  // ✅ lock background scroll
+  //  lock background scroll
   useEffect(() => {
     document.body.classList.add("modal-open");
     return () => document.body.classList.remove("modal-open");
   }, []);
 
-  // ✅ fetch cuisines once
+  //  fetch cuisines once
   useEffect(() => {
     const fetchCuisines = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisine`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisines`);
       const data = await res.json();
       setCuisines(data);
     };
@@ -56,7 +55,7 @@ export default function CreateMenuSecModal({ onClose }) {
     });
 
     reset();
-    onClose(); // ✅ close modal after save
+    onClose(); // close modal after save
   };
 
   return (
@@ -142,14 +141,14 @@ export default function CreateMenuSecModal({ onClose }) {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn-save"
                   onClick={onClose}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn-cancel"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Saving..." : "Save Section"}

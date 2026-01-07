@@ -1,5 +1,4 @@
 "use client";
-
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -59,7 +58,7 @@ export default function CreateMenuItemModal({ onClose }) {
 
   // Fetch cuisines
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisine`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisines`)
       .then((res) => res.json())
       .then(setCuisines);
   }, []);

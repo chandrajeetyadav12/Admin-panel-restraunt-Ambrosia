@@ -37,7 +37,7 @@ const CreateCuisine = ({ onClose }) => {
 
   const onSubmit = async (data) => {
     await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/cuisine`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/cuisines`,
       data
     );
     reset();

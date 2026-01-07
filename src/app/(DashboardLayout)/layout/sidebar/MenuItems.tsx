@@ -22,18 +22,18 @@ const Menuitems = [
     icon: IconLayoutDashboard,
     href: "/",
   },
-  //   {
-  //   id: uniqueId(),
-  //   title: "AddCuisine",
-  //   icon: IconTypography,
-  //   href: "#",
-  // },
-  //     {
-  //   id: uniqueId(),
-  //   title: "AddMenuSection",
-  //   icon: IconLayoutDashboard,
-  //   href: "/menuSection/createSection",
-  // },
+    {
+    id: uniqueId(),
+    title: "Cuisine",
+    icon: IconTypography,
+    href: "/cuisine/editdelete",
+  },
+      {
+    id: uniqueId(),
+    title: "MenuSection",
+    icon: IconLayoutDashboard,
+    href: "/menuSection/editdelete",
+  },
   //       {
   //   id: uniqueId(),
   //   title: "AddMenuItem",

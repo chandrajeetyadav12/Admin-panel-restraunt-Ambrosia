@@ -9,6 +9,8 @@ import CreateMenuSecModal from "@/app/(DashboardLayout)/menuSection/createSectio
 import CreateMenuItemModal from "@/app/(DashboardLayout)/menuItem/createMenuItem/page"
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 export default function AdminMenuPage() {
     const [showModal, setShowModal] = useState(false);
     const [showMenuSectionModal, setshowMenuSectionModal] = useState(false);
@@ -41,7 +43,7 @@ export default function AdminMenuPage() {
     useEffect(() => {
         const loadCuisines = async () => {
             try {
-                const res = await axios.get(`${BASE_URL}/api/cuisine`);
+                const res = await axios.get(`${BASE_URL}/api/cuisines`);
                 setCuisines(res.data);
                 if (res.data.length > 0) {
                     handleCuisineSelect(res.data[0]);
@@ -79,13 +81,23 @@ export default function AdminMenuPage() {
 
     /* ================= DELETE ================= */
     const handleDeleteItem = async (itemId) => {
-        if (!confirm("Delete this item?")) return;
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "This item will be permanently deleted",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete",
+            cancelButtonText: "Cancel",
+        });
+        if (!result.isConfirmed) return;
+
         try {
             await axios.delete(`${BASE_URL}/api/menuItems/${itemId}`);
             handleCuisineSelect(selectedCuisine);
+            toast.success("Item deleted successfully");
         } catch (error) {
             console.error(error);
-            alert("Failed to delete item");
+            toast.error("Failed to delete item");
         }
         finally {
             setDeletingId(null);
@@ -141,7 +153,7 @@ export default function AdminMenuPage() {
                     startIcon={<AddIcon />}
                     onClick={() => setShowModal(true)}
                     fullWidth
-                    sx={{ justifyContent: "flex-start",color:"#000" }}
+                    sx={{ justifyContent: "flex-start", color: "#000" }}
                 >
                     Cuisine
                 </Button>
@@ -149,7 +161,7 @@ export default function AdminMenuPage() {
                     startIcon={<AddIcon />}
                     onClick={() => setshowMenuSectionModal(true)}
                     fullWidth
-                    sx={{ justifyContent: "flex-start",color:"#000" }}
+                    sx={{ justifyContent: "flex-start", color: "#000" }}
                 >
                     Menu Section
                 </Button>
@@ -157,14 +169,10 @@ export default function AdminMenuPage() {
                     startIcon={<AddIcon />}
                     onClick={() => setshowMenuItemsModal(true)}
                     fullWidth
-                    sx={{ justifyContent: "flex-start",color:"#000" }}
+                    sx={{ justifyContent: "flex-start", color: "#000" }}
                 >
                     Menu Items
                 </Button>
-                {/* <li onClick={() => setShowModal(true)}>Add Cuisine</li>
-                <li onClick={() => setshowMenuSectionModal(true)}>Add Menu Section</li>
-                <li onClick={() => setshowMenuItemsModal(true)}>Add Menu Items</li> */}
-
             </ul>
             <div className="addcuisine">
                 {showModal && (

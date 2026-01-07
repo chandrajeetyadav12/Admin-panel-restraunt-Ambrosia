@@ -11,7 +11,7 @@ import MonthlyEarnings from '@/app/(DashboardLayout)/components/dashboard/Monthl
 import AdminMenuPage from '@/app/(DashboardLayout)/components/menu/page'
 const Dashboard = () => {
   return (
-    <PageContainer title="Ambrosia Starbuds cafe Dashboard" description="This is Ambrosia Starbuds cafe Dashboard">
+    <PageContainer title="Ambrosia Starbuds cafe" description="This is Ambrosia Starbuds cafe Dashboard">
       <Box>
         <Grid container spacing={3}>
           <Grid
