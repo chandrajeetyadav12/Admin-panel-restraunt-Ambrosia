@@ -22,15 +22,25 @@ const renderMenuItems = (items: any, pathDirect: any) => {
 
     const Icon = item.icon ? item.icon : IconPoint;
 
-    const itemIcon = <Icon stroke={1.5} size="1.3rem" />;
+    const itemIcon = <Icon stroke={1.5} size="1.3rem" color="#fff" />;
 
     if (item.subheader) {
       // Display Subheader
       return (
-        <Menu
-          subHeading={item.subheader}
-          key={item.subheader}
-        />
+        <Box
+        key={item.subheader}
+        sx={{
+          "& .MuiListSubheader-root": {
+            color: "#fff",
+            fontWeight: 700,
+          },
+        }}>
+          <Menu
+            subHeading={item.subheader}
+            key={item.subheader}
+
+          />
+        </Box>
       );
     }
 
@@ -42,6 +52,7 @@ const renderMenuItems = (items: any, pathDirect: any) => {
           title={item.title}
           icon={itemIcon}
           borderRadius='7px'
+
         >
           {renderMenuItems(item.children, pathDirect)}
         </Submenu>
@@ -51,7 +62,16 @@ const renderMenuItems = (items: any, pathDirect: any) => {
     // If the item has no children, render a MenuItem
 
     return (
-      <Box px={3} key={item.id}>
+      <Box px={3} key={item.id} sx={{
+        "& .MuiTypography-root": {
+          color: pathDirect === item.href ? "#e66f15" : "#fff",fontWeight: 700,
+
+        },
+        "&:hover .MuiTypography-root": {
+          color: "#e66f15",
+        },
+      }}
+      >
         <MenuItem
           key={item.id}
           isSelected={pathDirect === item?.href}
@@ -59,6 +79,7 @@ const renderMenuItems = (items: any, pathDirect: any) => {
           icon={itemIcon}
           link={item.href}
           component={Link}
+
         >
           {item.title}
         </MenuItem >
@@ -75,7 +96,7 @@ const SidebarItems = () => {
 
   return (
     < >
-      <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#e66f15"} themeSecondaryColor={'#fff'} >
+      <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#111"} themeSecondaryColor={'#fff'} >
         <Box
           sx={{
             width: "100%",
@@ -83,7 +104,7 @@ const SidebarItems = () => {
             justifyContent: "center",
             alignItems: "center",
             padding: "20px 0",
-            backgroundColor:"#111"
+            backgroundColor: "#111"
           }}
         >
           <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>

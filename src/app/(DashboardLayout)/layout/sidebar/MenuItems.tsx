@@ -1,9 +1,9 @@
 import {
   IconAperture,
-  // IconCopy,
+  IconCopy,
   IconLayoutDashboard,
   IconLogin,
-  // IconMoodHappy,
+  IconMoodHappy,
   IconTypography,
   IconUserPlus,
 } from "@tabler/icons-react";
@@ -31,8 +31,14 @@ const Menuitems = [
       {
     id: uniqueId(),
     title: "MenuSection",
-    icon: IconLayoutDashboard,
+    icon: IconMoodHappy,
     href: "/menuSection/editdelete",
+  },
+      {
+    id: uniqueId(),
+    title: "Menu Items",
+    icon: IconAperture,
+    href: "/menuItem/editdelete",
   },
   //       {
   //   id: uniqueId(),

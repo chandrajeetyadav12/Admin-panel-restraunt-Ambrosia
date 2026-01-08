@@ -50,8 +50,9 @@ export default function CreateMenuItemModal({ onClose }) {
 
   const selectedCuisine = watch("cuisine");
 
-  // 🔒 lock background scroll
+  //  lock background scroll
   useEffect(() => {
+    if (typeof window === "undefined") return;
     document.body.classList.add("modal-open");
     return () => document.body.classList.remove("modal-open");
   }, []);
@@ -106,7 +107,7 @@ export default function CreateMenuItemModal({ onClose }) {
   style={{
     position: "fixed",
     inset: 0,
-    zIndex: 9999, //  VERY IMPORTANT
+    zIndex: 9999,
   }}
 >
   <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style={{ height: "calc(100vh - 2rem)" }}>

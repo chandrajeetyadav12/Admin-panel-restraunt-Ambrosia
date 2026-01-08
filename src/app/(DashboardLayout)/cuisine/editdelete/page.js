@@ -2,10 +2,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import CreateCuisine from "@/app/(DashboardLayout)/cuisine/create/page"
 
 export default function CuisinesPage() {
     const [cuisines, setCuisines] = useState([]);
@@ -15,15 +20,22 @@ export default function CuisinesPage() {
     const [editingId, setEditingId] = useState(null);
     const [deletingId, setDeletingId] = useState(null);
     const [formData, setFormData] = useState({ name: "" });
+    const [CuisineLoading, setCuisineLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     //  GET ALL CUISINES
     const fetchCuisines = async () => {
         try {
+            setCuisineLoading(true)
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisines`);
             // console.log(res)
             setCuisines(res.data);
         } catch (error) {
             console.error("Error fetching cuisines", error);
+        }
+        finally {
+            setCuisineLoading(false)
+
         }
     };
 
@@ -32,11 +44,16 @@ export default function CuisinesPage() {
     }, []);
     //Delete the cuisine
     const handleDelete = async (id) => {
-        if (typeof window === "undefined") return;
-        const confirmDelete = window.confirm(
-            "This will delete cuisine, sections & menu items. Continue?"
-        );
-        if (!confirmDelete) return;
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "This will delete permanently cuisine, sections & menu items . Continue?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete",
+            cancelButtonText: "Cancel",
+        });
+        if (!result.isConfirmed) return;
+
 
         setDeletingId(id);
 
@@ -46,10 +63,15 @@ export default function CuisinesPage() {
             );
 
             //  Update UI using state (NO refetch needed)
+            toast.success("Item deleted successfully");
             setCuisines((prev) => prev.filter((item) => item._id !== id));
 
         } catch (error) {
-            alert(error.response?.data?.message || "Delete failed");
+
+            toast.error("Failed to delete item");
+            console.error(error);
+
+
         } finally {
             setDeletingId(null);
         }
@@ -92,8 +114,21 @@ export default function CuisinesPage() {
     };
 
     return (
-        <div style={{ padding: "20px" }}>
-            <h2>Cuisines</h2>
+        <div style={{ padding: "20px" ,maxWidth:"500px"}}>
+           <div className="d-flex justify-content-between">
+            {CuisineLoading ? (<Box display="flex" alignItems="center" gap={2}>
+                <Skeleton variant="text" width={300} height={30} />
+                <Typography variant="body2" color="text.secondary">
+                    Loading...
+                </Typography>
+            </Box>) : <h2>Cuisines</h2>}
+            <IconButton>
+                <AddIcon sx={{ color: "#13DEB9" }}
+                    onClick={() => setShowModal(true)}
+                />
+            </IconButton>
+           </div>
+
 
             {/* CUISINE LIST */}
             {cuisines.map((cuisine) => (
@@ -117,7 +152,7 @@ export default function CuisinesPage() {
                     <Box sx={{ display: "flex", gap: 1 }}>
                         <IconButton
                             size="small"
-                            sx={{ color: "green" }}
+                            sx={{ color: "#13DEB9" }}
                             onClick={() => handleEdit(cuisine._id)}
                         >
                             <EditIcon />
@@ -131,10 +166,15 @@ export default function CuisinesPage() {
                         >
                             <DeleteIcon />
                         </IconButton>
+
                     </Box>
                 </Box>
             ))}
-
+            <div className="addcuisine">
+                {showModal && (
+                    <CreateCuisine onClose={() => setShowModal(false)} />
+                )}
+            </div>
 
             {/* MODAL */}
             {open && (

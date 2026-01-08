@@ -62,7 +62,7 @@ const MSidebar = ({
           <Box
             sx={{
               height: "100%",
-          // backgroundColor:"#111"
+              backgroundColor: "#111"
 
             }}
           >
@@ -106,6 +106,7 @@ const MSidebar = ({
       </Box>
       {/* ------------------------------------------- */}
       {/* Sidebar For Mobile */}
+      
       {/* ------------------------------------------- */}
     </Drawer>
   );

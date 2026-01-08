@@ -1,19 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import AddIcon from '@mui/icons-material/Add';
+import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import CreateMenuSecModal from "@/app/(DashboardLayout)/menuSection/createSection/page"
 export default function MenuSectionsPage() {
   const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,6 +25,7 @@ export default function MenuSectionsPage() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({ name: "" });
+  const [showMenuSectionModal, setshowMenuSectionModal] = useState(false);
 
   //  Fetch ALL cuisines
   useEffect(() => {
@@ -71,21 +73,48 @@ export default function MenuSectionsPage() {
 
   //  Delete menu section
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this menu section?")) return;
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This will delete permanently cuisine, sections & menu items . Continue?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete",
+      cancelButtonText: "Cancel",
+    });
+    if (!result.isConfirmed) return;
 
     try {
       await axios.delete(`${API}/api/menuSection/${id}`);
+      toast.success("Menu section  deleted successfully");
       setSections((prev) => prev.filter((s) => s._id !== id));
-    } catch (err) {
-      alert(err.response?.data?.message || "Delete failed");
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        "Failed to delete menu section";
+      toast.error(message);
+      console.error(error);
     }
   };
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h6" mb={2}>
-        Menu Sections
-      </Typography>
+
+      <div className="d-flex justify-content-between" style={{ maxWidth: "500px" }}>
+        <h6>
+          Menu Sections
+        </h6>
+        <IconButton>
+          <AddIcon
+            sx={{ color: "#13DEB9" }}
+            onClick={() => setshowMenuSectionModal(true)}
+          />
+        </IconButton>
+      </div>
+      <div className="addmenusection">
+        {showMenuSectionModal && (
+          <CreateMenuSecModal onClose={() => setshowMenuSectionModal(false)} />
+        )}
+      </div>
 
       {/* Cuisine Dropdown */}
       <Select
@@ -119,14 +148,14 @@ export default function MenuSectionsPage() {
 
           <Box>
             <IconButton
-              color="success"
+              sx={{ color: "#13DEB9" }}
               onClick={() => handleEdit(section)}
             >
               <EditIcon />
             </IconButton>
 
             <IconButton
-              color="error"
+              sx={{ color: "red" }}
               onClick={() => handleDelete(section._id)}
             >
               <DeleteIcon />
@@ -163,8 +192,8 @@ export default function MenuSectionsPage() {
           />
 
           <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-            <Button sx={{backgroundColor:"#e66f15",color:"#fff"}} onClick={() => setOpen(false)}>Cancel</Button>
-            <Button sx={{backgroundColor:"#e66f15",color:"#fff"}} onClick={handleUpdate}>
+            <Button sx={{ backgroundColor: "gray", color: "#fff" }} onClick={() => setOpen(false)}>Cancel</Button>
+            <Button sx={{ backgroundColor: "#e66f15", color: "#fff" }} onClick={handleUpdate}>
               Update
             </Button>
           </Box>
