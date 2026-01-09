@@ -19,7 +19,7 @@ export default function CuisinesPage() {
 
     const [editingId, setEditingId] = useState(null);
     const [deletingId, setDeletingId] = useState(null);
-    const [formData, setFormData] = useState({ name: "" });
+    const [formData, setFormData] = useState({ name: "", isActive: true });
     const [CuisineLoading, setCuisineLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
@@ -85,7 +85,7 @@ export default function CuisinesPage() {
             setLoading(true);
 
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisines/${id}`);
-            setFormData({ name: res.data.name });
+            setFormData({ name: res.data.name, isActive: res.data.isActive });
             setEditingId(id);
         } catch (error) {
             console.error("Error fetching cuisine", error);
@@ -101,11 +101,12 @@ export default function CuisinesPage() {
         try {
             await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisines/${editingId}`, {
                 name: formData.name,
+                isActive: formData.isActive 
             });
 
             setOpen(false);
             setEditingId(null);
-            setFormData({ name: "" });
+            setFormData({ name: "", isActive: true });
 
             fetchCuisines(); // refresh list
         } catch (error) {
@@ -114,20 +115,20 @@ export default function CuisinesPage() {
     };
 
     return (
-        <div style={{ padding: "20px" ,maxWidth:"500px"}}>
-           <div className="d-flex justify-content-between">
-            {CuisineLoading ? (<Box display="flex" alignItems="center" gap={2}>
-                <Skeleton variant="text" width={300} height={30} />
-                <Typography variant="body2" color="text.secondary">
-                    Loading...
-                </Typography>
-            </Box>) : <h2>Cuisines</h2>}
-            <IconButton>
-                <AddIcon sx={{ color: "#13DEB9" }}
-                    onClick={() => setShowModal(true)}
-                />
-            </IconButton>
-           </div>
+        <div style={{ padding: "20px", maxWidth: "500px" }}>
+            <div className="d-flex justify-content-between">
+                {CuisineLoading ? (<Box display="flex" alignItems="center" gap={2}>
+                    <Skeleton variant="text" width={300} height={30} />
+                    <Typography variant="body2" color="text.secondary">
+                        Loading...
+                    </Typography>
+                </Box>) : <h2>Cuisines</h2>}
+                <IconButton>
+                    <AddIcon sx={{ color: "#13DEB9" }}
+                        onClick={() => setShowModal(true)}
+                    />
+                </IconButton>
+            </div>
 
 
             {/* CUISINE LIST */}
@@ -206,14 +207,25 @@ export default function CuisinesPage() {
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) =>
-                                        setFormData({ name: e.target.value })
+                                        setFormData({ ...formData, name: e.target.value })
                                     }
                                     style={{ width: "100%", marginBottom: "10px" }}
                                 />
+                                <label style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.isActive}
+                                        onChange={(e) =>
+                                            setFormData({ ...formData, isActive: e.target.checked })
+                                        }
+                                    />
+                                    Active
+                                </label>
 
                                 <div style={{ display: "flex", gap: "10px" }}>
-                                    <button className="btn-save" onClick={handleUpdate}>Update</button>
                                     <button className="btn-cancel" onClick={() => setOpen(false)}>Cancel</button>
+                                    <button className="btn-save" onClick={handleUpdate}>Update</button>
+
                                 </div>
                             </>
                         )}

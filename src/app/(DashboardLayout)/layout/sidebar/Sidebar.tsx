@@ -50,6 +50,8 @@ const MSidebar = ({
             paper: {
               sx: {
                 boxSizing: "border-box",
+                backgroundColor: "#111",
+                color: "#fff",
                 ...scrollbarStyles,
                 width: sidebarWidth,
               },
@@ -91,6 +93,8 @@ const MSidebar = ({
           sx: {
             boxShadow: (theme) => theme.shadows[8],
             ...scrollbarStyles,
+            backgroundColor: "#111",
+            color: "#fff",
           },
         }
       }}
@@ -106,7 +110,7 @@ const MSidebar = ({
       </Box>
       {/* ------------------------------------------- */}
       {/* Sidebar For Mobile */}
-      
+
       {/* ------------------------------------------- */}
     </Drawer>
   );

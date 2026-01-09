@@ -8,7 +8,7 @@ import PageContainer from '@/app/(DashboardLayout)/components/container/PageCont
 // import ProductPerformance from '@/app/(DashboardLayout)/components/dashboard/ProductPerformance';
 // import Blog from '@/app/(DashboardLayout)/components/dashboard/Blog';
 // import MonthlyEarnings from '@/app/(DashboardLayout)/components/dashboard/MonthlyEarnings';
-import AdminMenuPage from '@/app/(DashboardLayout)/components/menu/page'
+import DashboardPage from "@/app/(DashboardLayout)/components/admindashboard/page"
 const Dashboard = () => {
   return (
     <PageContainer title="Ambrosia Starbuds cafe" description="This is Ambrosia Starbuds cafe Dashboard">
@@ -19,7 +19,7 @@ const Dashboard = () => {
               xs: 12,
               lg: 12
             }}>
-            <AdminMenuPage />
+            <DashboardPage />
           </Grid>
           {/* <Grid
             size={{

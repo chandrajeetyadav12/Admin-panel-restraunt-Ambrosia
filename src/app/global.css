@@ -171,6 +171,14 @@
 .modal-backdrop {
   z-index: 9998 !important;
 }
+.text-gray{
+  color: gray;
+  font-weight: 800;
+}
+.heading_5{
+  font-weight: 900;
+  color: #000;
+}
 .heading{
   font-weight: 900;
   font-size: 40px;
@@ -179,12 +187,21 @@
  color:#5c6574;
  font-weight: 700;
 }
+.dashboardSummaryCard{
+  width: 180px;
+}
 @media (max-width: 1199px) {
 
 }
 @media (max-width: 991px) {
 .cuisine-btn{
   font-size: 14px;
+}
+.dashboardSummaryCard{
+  width: 140px;
+}
+.heading{
+  font-size: 20px;
 }
 }
 
