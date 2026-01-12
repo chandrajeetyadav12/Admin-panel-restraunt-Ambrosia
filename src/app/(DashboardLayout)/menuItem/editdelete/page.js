@@ -102,12 +102,30 @@ export default function AdminMenuPage() {
         if (!result.isConfirmed) return;
 
         try {
-            await axios.delete(`${BASE_URL}/api/menuItems/${itemId}`);
+            const token = localStorage.getItem("token")
+            if (!token) {
+                toast.error("Please login first");
+                return;
+            }
+            await axios.delete(`${BASE_URL}/api/menuItems/${itemId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
             handleCuisineSelect(selectedCuisine);
             toast.success("Item deleted successfully");
         } catch (error) {
-            console.error(error);
-            toast.error("Failed to delete item");
+            let message = "Failed to delete menu items";
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message; // backend message
+            } else if (error.message) {
+                message = error.message; // axios / JS error
+            }
+
+            toast.error(message);
         }
         finally {
             setDeletingId(null);
@@ -129,6 +147,11 @@ export default function AdminMenuPage() {
 
     const handleUpdateItem = async () => {
         try {
+            const token = localStorage.getItem("token")
+            if (!token) {
+                toast.error("Please login first");
+                return;
+            }
             setSaving(true);
             const data = new FormData();
             data.append("name", formData.name);
@@ -139,13 +162,23 @@ export default function AdminMenuPage() {
 
             await axios.put(
                 `${BASE_URL}/api/menuItems/${editingItem._id}`,
-                data
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+                
             );
-
+            toast.success("Menu items updated successfully");
             setEditingItem(null);
             handleCuisineSelect(selectedCuisine);
         } catch (error) {
-            console.error(error);
+            const message =
+                error?.response?.data?.message ||
+                "Failed to update menu items";
+            toast.error(message);
+            // console.error(error);
         }
         finally {
             setSaving(false);
@@ -157,13 +190,13 @@ export default function AdminMenuPage() {
     return (
         <div className="admin-container">
             <div className="d-flex justify-content-between">
-            <h2 className="heading">Menu Items</h2>
-            <IconButton size="large">
-            <AddIcon
-            sx={{ color: "#13DEB9" }}
-            onClick={() => setshowMenuItemsModal(true)}
-            />
-            </IconButton>
+                <h2 className="heading">Menu Items</h2>
+                <IconButton size="large">
+                    <AddIcon
+                        sx={{ color: "#13DEB9" }}
+                        onClick={() => setshowMenuItemsModal(true)}
+                    />
+                </IconButton>
             </div>
 
 

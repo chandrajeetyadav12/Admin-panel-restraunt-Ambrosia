@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 
 const menuItemSchema = yup.object({
   name: yup.string().required("Item name is required"),
@@ -88,30 +89,48 @@ export default function CreateMenuItemModal({ onClose }) {
         formData.append(key, data[key]);
       }
     });
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Please login first");
+        return;
+      }
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menuItems`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+        body: formData,
 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menuItems`, {
-      method: "POST",
-      body: formData,
-    });
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Unauthorized");
+      }
+      toast.success("Menu Item created successfully");
 
-    reset();
-    onClose();
+      reset();
+      onClose();
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    }
+
   };
 
   return (
     <>
       {/* MODAL */}
-<div
-  className="modal fade show d-block"
-  tabIndex="-1"
-  style={{
-    position: "fixed",
-    inset: 0,
-    zIndex: 9999,
-  }}
->
-  <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style={{ height: "calc(100vh - 2rem)" }}>
-    <div className="modal-content" style={{ height: "100%" }}>
+      <div
+        className="modal fade show d-block"
+        tabIndex="-1"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+        }}
+      >
+        <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style={{ height: "calc(100vh - 2rem)" }}>
+          <div className="modal-content" style={{ height: "100%" }}>
             <div className="modal-header">
               <h5 className="modal-title">Add Menu Item</h5>
               <button className="btn-close" onClick={onClose}></button>
@@ -123,9 +142,8 @@ export default function CreateMenuItemModal({ onClose }) {
                 <div className="mb-3">
                   <label className="form-label">Item Name</label>
                   <input
-                    className={`form-control ${
-                      errors.name ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.name ? "is-invalid" : ""
+                      }`}
                     {...register("name")}
                   />
                 </div>
@@ -135,9 +153,8 @@ export default function CreateMenuItemModal({ onClose }) {
                   <label className="form-label">Price</label>
                   <input
                     type="number"
-                    className={`form-control ${
-                      errors.price ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.price ? "is-invalid" : ""
+                      }`}
                     {...register("price")}
                   />
                 </div>
@@ -146,9 +163,8 @@ export default function CreateMenuItemModal({ onClose }) {
                 <div className="mb-3">
                   <label className="form-label">Cuisine</label>
                   <select
-                    className={`form-select ${
-                      errors.cuisine ? "is-invalid" : ""
-                    }`}
+                    className={`form-select ${errors.cuisine ? "is-invalid" : ""
+                      }`}
                     {...register("cuisine")}
                   >
                     <option value="">Select Cuisine</option>
@@ -164,9 +180,8 @@ export default function CreateMenuItemModal({ onClose }) {
                 <div className="mb-3">
                   <label className="form-label">Section</label>
                   <select
-                    className={`form-select ${
-                      errors.section ? "is-invalid" : ""
-                    }`}
+                    className={`form-select ${errors.section ? "is-invalid" : ""
+                      }`}
                     {...register("section")}
                     disabled={!sections.length}
                   >
@@ -194,9 +209,8 @@ export default function CreateMenuItemModal({ onClose }) {
                   <label className="form-label">Sales Count</label>
                   <input
                     type="number"
-                    className={`form-control ${
-                      errors.salesCount ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.salesCount ? "is-invalid" : ""
+                      }`}
                     {...register("salesCount")}
                     min={0}
                   />
@@ -207,9 +221,8 @@ export default function CreateMenuItemModal({ onClose }) {
                   <label className="form-label">Item Image</label>
                   <input
                     type="file"
-                    className={`form-control ${
-                      errors.image ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.image ? "is-invalid" : ""
+                      }`}
                     {...register("image")}
                   />
                 </div>
@@ -259,13 +272,13 @@ export default function CreateMenuItemModal({ onClose }) {
 
       {/* BACKDROP */}
       <div
-  className="modal-backdrop fade show"
-  style={{
-    position: "fixed",
-    inset: 0,
-    zIndex: 9998, //  just below modal
-  }}
-></div>
+        className="modal-backdrop fade show"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9998, //  just below modal
+        }}
+      ></div>
     </>
   );
 }
