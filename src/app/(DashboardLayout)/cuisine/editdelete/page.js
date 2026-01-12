@@ -58,8 +58,19 @@ export default function CuisinesPage() {
         setDeletingId(id);
 
         try {
+            const token = localStorage.getItem("token")
+            if (!token) {
+                toast.error("Please login first");
+                return;
+            }
             await axios.delete(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/cuisines/${id}`
+                `${process.env.NEXT_PUBLIC_API_URL}/api/cuisines/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+
             );
 
             //  Update UI using state (NO refetch needed)
@@ -68,8 +79,12 @@ export default function CuisinesPage() {
 
         } catch (error) {
 
-            toast.error("Failed to delete item");
-            console.error(error);
+            const message =
+                error?.response?.data?.message ||
+                "Failed to delete cuisine";
+
+            toast.error(message);
+            // console.error(error);
 
 
         } finally {
@@ -99,10 +114,20 @@ export default function CuisinesPage() {
         if (!editingId) return;
 
         try {
+            const token = localStorage.getItem("token")
+            if (!token) {
+                toast.error("Please login first");
+                return;
+            }
             await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/cuisines/${editingId}`, {
                 name: formData.name,
-                isActive: formData.isActive 
-            });
+                isActive: formData.isActive
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
 
             setOpen(false);
             setEditingId(null);
@@ -110,7 +135,11 @@ export default function CuisinesPage() {
 
             fetchCuisines(); // refresh list
         } catch (error) {
-            console.error("Error updating cuisine", error);
+            const message =
+                error?.response?.data?.message ||
+                "Failed to update cuisine";
+            toast.error(message);
+            console.error(error);
         }
     };
 

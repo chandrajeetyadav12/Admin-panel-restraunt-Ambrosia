@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 
 export const menuSectionSchema = yup.object({
   name: yup.string().required("Section name is required"),
@@ -48,14 +49,31 @@ export default function CreateMenuSecModal({ onClose }) {
   }, []);
 
   const onSubmit = async (formData) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menuSection`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Please login first");
+        return;
+      }
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menuSection`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Unauthorized");
+      }
+      toast.success("Menu section created successfully");
+      reset();
+      onClose(); // close modal after save
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    }
 
-    reset();
-    onClose(); // close modal after save
   };
 
   return (
@@ -95,9 +113,8 @@ export default function CreateMenuSecModal({ onClose }) {
                 <div className="mb-3">
                   <label className="form-label">Cuisine</label>
                   <select
-                    className={`form-select ${
-                      errors.cuisine ? "is-invalid" : ""
-                    }`}
+                    className={`form-select ${errors.cuisine ? "is-invalid" : ""
+                      }`}
                     {...register("cuisine")}
                   >
                     <option value="">Select Cuisine</option>
@@ -117,9 +134,8 @@ export default function CreateMenuSecModal({ onClose }) {
                   <label className="form-label">Order</label>
                   <input
                     type="number"
-                    className={`form-control ${
-                      errors.order ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.order ? "is-invalid" : ""
+                      }`}
                     {...register("order")}
                   />
                   <div className="invalid-feedback">

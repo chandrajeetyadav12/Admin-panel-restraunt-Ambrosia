@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 export const cuisineSchema = yup.object({
   name: yup.string().required("Cuisine name is required").min(2),
   description: yup.string().max(200),
@@ -36,12 +36,33 @@ const CreateCuisine = ({ onClose }) => {
   }, []);
 
   const onSubmit = async (data) => {
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/cuisines`,
-      data
-    );
-    reset();
-    onClose();
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Please login first");
+        return;
+      }
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cuisines`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success("Cuisine created successfully");
+
+      reset();
+      onClose();
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        "Failed to create cuisine";
+
+      toast.error(message);
+    }
+
   };
 
   return (
@@ -72,9 +93,8 @@ const CreateCuisine = ({ onClose }) => {
                 <div className="mb-3">
                   <label className="form-label">Description</label>
                   <textarea
-                    className={`form-control ${
-                      errors.description ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.description ? "is-invalid" : ""
+                      }`}
                     {...register("description")}
                     rows={3}
                   />

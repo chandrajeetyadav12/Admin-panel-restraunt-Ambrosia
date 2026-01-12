@@ -54,25 +54,42 @@ export default function MenuSectionsPage() {
 
   // Update menu section
   const handleUpdate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login first");
+      return;
+    }
     try {
       const res = await axios.put(
         `${API}/api/menuSection/${editingId}`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setSections((prev) =>
         prev.map((s) => (s._id === editingId ? res.data : s))
       );
-
+      toast.success("Menu section updated successfully")
       setOpen(false);
       setEditingId(null);
     } catch (err) {
-      alert(err.response?.data?.message || "Update failed");
+      toast.error(
+        err?.response?.data?.message || "Update failed"
+      );
     }
   };
 
   //  Delete menu section
   const handleDelete = async (id) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login first");
+      return;
+    }
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "This will delete permanently cuisine, sections & menu items . Continue?",
@@ -84,7 +101,13 @@ export default function MenuSectionsPage() {
     if (!result.isConfirmed) return;
 
     try {
-      await axios.delete(`${API}/api/menuSection/${id}`);
+      await axios.delete(`${API}/api/menuSection/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       toast.success("Menu section  deleted successfully");
       setSections((prev) => prev.filter((s) => s._id !== id));
     } catch (error) {
