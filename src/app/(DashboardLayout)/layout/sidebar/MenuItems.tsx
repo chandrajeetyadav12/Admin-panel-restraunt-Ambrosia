@@ -6,11 +6,12 @@ import {
   IconMoodHappy,
   IconTypography,
   IconUserPlus,
+  IconLogout
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
 
-const Menuitems = [
+ const getMenuItems = (isLoggedIn: boolean) => [
   {
     navlabel: true,
     subheader: "HOME",
@@ -72,17 +73,23 @@ const Menuitems = [
     navlabel: true,
     subheader: "AUTH",
   },
-  {
+  !isLoggedIn &&{
     id: uniqueId(),
     title: "Login",
     icon: IconLogin,
     href: "/authentication/login",
   },
-  {
+  !isLoggedIn &&{
     id: uniqueId(),
     title: "Register",
     icon: IconUserPlus,
     href: "/authentication/register",
+  },
+    isLoggedIn && {
+    id: uniqueId(),
+    title: "Logout",
+    icon: IconLogout,
+    action: "logout",
   },
   // {
   //   navlabel: true,
@@ -101,8 +108,8 @@ const Menuitems = [
   //   href: "/sample-page",
   // },
 
-];
+].filter(Boolean);
 
-export default Menuitems;
+export default getMenuItems;
 
 

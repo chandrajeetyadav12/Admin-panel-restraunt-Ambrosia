@@ -1,16 +1,52 @@
+"use client";
 import React from 'react';
 import { Box, AppBar, Toolbar, styled, Stack, IconButton, Badge, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 // components
 import Profile from './Profile';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
-
+import axios from 'axios';
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
+  const [mounted, setMounted] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, []);
+  useEffect(() => {
+    setMounted(true);
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Logout error", error);
+    } finally {
+      localStorage.clear();
+      window.location.href = "/authentication/login";
+    }
+  };
+
 
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -29,7 +65,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
     width: '100%',
     color: theme.palette.text.secondary,
   }));
-
+  if (!mounted) return null;
   return (
     <AppBarStyled position="sticky" color="default">
       <ToolbarStyled>
@@ -71,10 +107,41 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </IconButton>
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button variant="contained" component={Link} href="/authentication/login" disableElevation sx={{ backgroundColor: "#e66f15", color: "#fff" }} >
-            Login
-          </Button>
-          <Profile />
+          {!isLoggedIn ? (
+            <Button
+              variant="contained"
+              component={Link}
+              href="/authentication/login"
+              disableElevation
+              sx={{
+                backgroundColor: "#e66f15",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#cf5f12",
+                },
+              }}
+            >
+              Login
+            </Button>
+          ) : (
+            <>
+              <Profile />
+
+              <Button
+                variant="text"
+                onClick={handleLogout}
+                sx={{
+                  color: "#e66f15",
+                  fontWeight: 600,
+                  "&:hover": {
+                    backgroundColor: "rgba(230,111,21,0.1)",
+                  },
+                }}
+              >
+                Logout
+              </Button>
+            </>
+          )}
         </Stack>
       </ToolbarStyled>
     </AppBarStyled>

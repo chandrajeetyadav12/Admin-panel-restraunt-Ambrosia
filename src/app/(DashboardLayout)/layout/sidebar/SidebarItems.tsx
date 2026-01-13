@@ -1,135 +1,166 @@
 "use client";
-import React from "react";
-import Menuitems from "./MenuItems";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import axios from "axios";
 import {
-  Logo,
   Sidebar as MUI_Sidebar,
   Menu,
   MenuItem,
   Submenu,
 } from "react-mui-sidebar";
-import { IconPoint } from '@tabler/icons-react';
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Upgrade } from "./Updrade";
+import { IconPoint } from "@tabler/icons-react";
 
-
-const renderMenuItems = (items: any, pathDirect: any) => {
-
-  return items.map((item: any) => {
-
-    const Icon = item.icon ? item.icon : IconPoint;
-
-    const itemIcon = <Icon stroke={1.5} size="1.3rem" color="#fff" />;
-
-    if (item.subheader) {
-      // Display Subheader
-      return (
-        <Box
-        key={item.subheader}
-        sx={{
-          "& .MuiListSubheader-root": {
-            color: "#fff",
-            fontWeight: 700,
-          },
-        }}>
-          <Menu
-            subHeading={item.subheader}
-            key={item.subheader}
-
-          />
-        </Box>
-      );
-    }
-
-    //If the item has children (submenu)
-    if (item.children) {
-      return (
-        <Submenu
-          key={item.id}
-          title={item.title}
-          icon={itemIcon}
-          borderRadius='7px'
-
-        >
-          {renderMenuItems(item.children, pathDirect)}
-        </Submenu>
-      );
-    }
-
-    // If the item has no children, render a MenuItem
-
-    return (
-      <Box px={3} key={item.id} sx={{
-        "& .MuiTypography-root": {
-          color: pathDirect === item.href ? "#e66f15" : "#fff",fontWeight: 700,
-
-        },
-        "&:hover .MuiTypography-root": {
-          color: "#e66f15",
-        },
-      }}
-      >
-        <MenuItem
-          key={item.id}
-          isSelected={pathDirect === item?.href}
-          borderRadius='8px'
-          icon={itemIcon}
-          link={item.href}
-          component={Link}
-
-        >
-          {item.title}
-        </MenuItem >
-      </Box>
-
-    );
-  });
-};
-
+import getMenuItems from "./MenuItems";
 
 const SidebarItems = () => {
   const pathname = usePathname();
-  const pathDirect = pathname;
+  const router = useRouter();
 
-  return (
-    < >
-      <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#111"} themeSecondaryColor={'#fff'} >
-        <Box
+  const isLoggedIn =
+    typeof window !== "undefined" &&
+    !!localStorage.getItem("token");
+
+  //  LOGOUT HANDLER
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      }
+    } catch (err) {
+      console.error("Logout error", err);
+    } finally {
+      localStorage.clear();
+      router.push("/authentication/login");
+    }
+  };
+
+  const renderMenuItems = (items: any[]) =>
+    items.map((item) => {
+      const Icon = item.icon || IconPoint;
+      const itemIcon = <Icon size="1.3rem" color="#fff" />;
+
+      //  Subheader
+      if (item.subheader) {
+        return (
+          <Box
+            key={item.subheader}
+            sx={{
+              "& .MuiListSubheader-root": {
+                color: "#fff",
+                fontWeight: 700,
+              },
+            }}
+          >
+            <Menu subHeading={item.subheader} />
+          </Box>
+        );
+      }
+
+      //  Logout (SPECIAL CASE)
+      if (item.action === "logout") {
+        return (
+          <Box
+            key={item.id}
+            px={3}
+            sx={{
+              cursor: "pointer",
+              "& .MuiTypography-root": {
+                color: "#fff",
+                fontWeight: 700,
+              },
+              "&:hover .MuiTypography-root": {
+                color: "#e66f15",
+              },
+            }}
+            onClick={handleLogout}
+          >
+            <MenuItem icon={itemIcon} component="div">
+              {item.title}
+            </MenuItem>
+          </Box>
+        );
+      }
+
+      //  Normal Menu Item
+      return (
+        <Box px={3} key={item.id}
           sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "20px 0",
-            backgroundColor: "#111"
+            borderRadius: "8px",
+            color: "#fff",
+            fontWeight: 700,
+
+            "& .MuiTypography-root": {
+              color: "#fff",
+              fontWeight: 700,
+            },
+
+            "&:hover": {
+              backgroundColor: "rgba(255,255,255,0.08)",
+            },
+
+            "&:hover .MuiTypography-root": {
+              color: "#e66f15",
+            },
+
+            "&.Mui-selected .MuiTypography-root": {
+              color: "#e66f15",
+            },
           }}
         >
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
-            <Image
-              src="/images/logos/logo.svg"
-              alt="logo"
-              width={190}
-              height={80}
-              priority
-              style={{
-                objectFit: "contain",
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
-          </Link>
-        </Box>
+          <MenuItem
+            icon={itemIcon}
+            component={Link}
+            link={item.href}
+            isSelected={pathname === item.href}
 
-        {renderMenuItems(Menuitems, pathDirect)}
-        <Box px={2}>
-          <Upgrade />
+          >
+            {item.title}
+          </MenuItem>
         </Box>
-      </MUI_Sidebar>
+      );
+    });
 
-    </>
+  return (
+    <MUI_Sidebar
+      width="100%"
+      showProfile={false}
+      themeColor="#111"
+      themeSecondaryColor="#fff"
+    >
+      {/* Logo */}
+      <Box
+        sx={{
+          padding: "20px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Link href="/">
+          <Image
+            src="/images/logos/logo.svg"
+            alt="logo"
+            width={190}
+            height={80}
+            priority
+          />
+        </Link>
+      </Box>
+
+      {/* Menu */}
+      {renderMenuItems(getMenuItems(isLoggedIn))}
+
+    
+    </MUI_Sidebar>
   );
 };
+
 export default SidebarItems;

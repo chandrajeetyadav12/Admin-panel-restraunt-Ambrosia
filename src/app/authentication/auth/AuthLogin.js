@@ -64,12 +64,10 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
       //  SUCCESS TOAST
       toast.success("Login successful");
-      router.push("/");
+      router.replace("/");
 
 
     } catch (error) {
-      console.error(error);
-
       // ERROR SWEET ALERT
       Swal.fire({
         icon: "error",

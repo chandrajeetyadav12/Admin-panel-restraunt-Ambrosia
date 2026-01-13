@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import Link from "next/link";
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import {
   Avatar,
   Box,
@@ -10,84 +12,120 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { IconMail, IconUser } from "@tabler/icons-react";
 
-import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react";
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  image?: string;
+}
 
 const Profile = () => {
-  const [anchorEl2, setAnchorEl2] = useState(null);
-  const handleClick2 = (event: any) => {
-    setAnchorEl2(event.currentTarget);
-  };
-  const handleClose2 = () => {
-    setAnchorEl2(null);
+  const [anchorEl2, setAnchorEl2] = useState<HTMLElement | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  const router = useRouter();
+
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Fetch profile AFTER mount
+  useEffect(() => {
+    if (!mounted) return;
+
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        setUser(res.data);
+      } catch (error) {
+        console.error("Failed to fetch profile", error);
+      }
+    };
+
+    fetchProfile();
+  }, [mounted]);
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      }
+    } catch (err) {
+      console.error("Logout error", err);
+    } finally {
+      localStorage.clear();
+      router.push("/authentication/login");
+    }
   };
 
   return (
     <Box>
       <IconButton
         size="large"
-        aria-label="show 11 new notifications"
         color="inherit"
-        aria-controls="msgs-menu"
-        aria-haspopup="true"
-        sx={{
-          ...(typeof anchorEl2 === "object" && {
-            color: "primary.main",
-          }),
-        }}
-        onClick={handleClick2}
+        onClick={(e) => setAnchorEl2(e.currentTarget)}
       >
         <Avatar
-          src="/images/profile/user-1.jpg"
-          alt="image"
-          sx={{
-            width: 35,
-            height: 35,
-          }}
+          src={user?.image || "/images/profile/user-1.jpg"}
+          alt={user?.name || "User"}
+          sx={{ width: 35, height: 35 }}
         />
       </IconButton>
-      {/* ------------------------------------------- */}
-      {/* Message Dropdown */}
-      {/* ------------------------------------------- */}
+
       <Menu
-        id="msgs-menu"
         anchorEl={anchorEl2}
-        keepMounted
         open={Boolean(anchorEl2)}
-        onClose={handleClose2}
+        onClose={() => setAnchorEl2(null)}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
-        sx={{
-          "& .MuiMenu-paper": {
-            width: "200px",
-          },
-        }}
+        sx={{ "& .MuiMenu-paper": { width: 200 } }}
       >
-        <MenuItem>
+        <MenuItem
+          // onClick={() => {
+          //   setAnchorEl2(null);
+          //   router.push("/profile");
+          // }}
+        >
           <ListItemIcon>
             <IconUser width={20} />
           </ListItemIcon>
           <ListItemText>My Profile</ListItemText>
         </MenuItem>
+
         <MenuItem>
           <ListItemIcon>
             <IconMail width={20} />
           </ListItemIcon>
           <ListItemText>My Account</ListItemText>
         </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <IconListCheck width={20} />
-          </ListItemIcon>
-          <ListItemText>My Tasks</ListItemText>
-        </MenuItem>
-        <Box mt={1} py={1} px={2}>
+
+        <Box mt={1} px={2}>
           <Button
-            href="/authentication/login"
             variant="outlined"
-            sx={{backgroundColor:"#fc791a",color:"#fff"}}
-            component={Link}
             fullWidth
+            onClick={handleLogout}
+            sx={{ backgroundColor: "#fc791a", color: "#fff" }}
           >
             Logout
           </Button>
