@@ -42,17 +42,21 @@ export default function CuisinesPage() {
     useEffect(() => {
         fetchCuisines();
     }, []);
+      //  INSTANT UI UPDATE AFTER CREATE
+  const handleCuisineCreated = (newCuisine) => {
+    setCuisines((prev) => [newCuisine, ...prev]);
+  };
     //Delete the cuisine
     const handleDelete = async (id) => {
-        const result = await Swal.fire({
-            title: "Are you sure?",
-            text: "This will delete permanently cuisine, sections & menu items . Continue?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete",
-            cancelButtonText: "Cancel",
-        });
-        if (!result.isConfirmed) return;
+        // const result = await Swal.fire({
+        //     title: "Are you sure?",
+        //     text: "First delete,Menu sections & menu items . Continue?",
+        //     icon: "warning",
+        //     showCancelButton: true,
+        //     confirmButtonText: "Yes, delete",
+        //     cancelButtonText: "Cancel",
+        // });
+        // if (!result.isConfirmed) return;
 
 
         setDeletingId(id);
@@ -82,7 +86,8 @@ export default function CuisinesPage() {
             const message =
                 error?.response?.data?.message ||
                 "Failed to delete cuisine";
-
+            console.log(error)
+            console.log(message)
             toast.error(message);
             // console.error(error);
 
@@ -103,7 +108,7 @@ export default function CuisinesPage() {
             setFormData({ name: res.data.name, isActive: res.data.isActive });
             setEditingId(id);
         } catch (error) {
-            console.error("Error fetching cuisine", error);
+            toast.error("Error fetching cuisine",error);
         } finally {
             setLoading(false);
         }
@@ -132,14 +137,14 @@ export default function CuisinesPage() {
             setOpen(false);
             setEditingId(null);
             setFormData({ name: "", isActive: true });
-
+           toast.success("cuisine updated successfully")
             fetchCuisines(); // refresh list
         } catch (error) {
             const message =
                 error?.response?.data?.message ||
                 "Failed to update cuisine";
             toast.error(message);
-            console.error(error);
+            // console.error(error);
         }
     };
 
@@ -202,7 +207,7 @@ export default function CuisinesPage() {
             ))}
             <div className="addcuisine">
                 {showModal && (
-                    <CreateCuisine onClose={() => setShowModal(false)} />
+                    <CreateCuisine onClose={() => setShowModal(false)} onCreated={handleCuisineCreated} />
                 )}
             </div>
 

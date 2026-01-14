@@ -11,7 +11,7 @@ export const cuisineSchema = yup.object({
   isActive: yup.boolean(),
 });
 
-const CreateCuisine = ({ onClose }) => {
+const CreateCuisine = ({ onClose, onCreated }) => {
   const {
     register,
     handleSubmit,
@@ -42,7 +42,7 @@ const CreateCuisine = ({ onClose }) => {
         toast.error("Please login first");
         return;
       }
-      await axios.post(
+     const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/cuisines`,
         data,
         {
@@ -52,7 +52,7 @@ const CreateCuisine = ({ onClose }) => {
         }
       );
       toast.success("Cuisine created successfully");
-
+      onCreated(res.data);
       reset();
       onClose();
     } catch (error) {

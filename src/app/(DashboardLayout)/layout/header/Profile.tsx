@@ -102,10 +102,10 @@ const Profile = () => {
         sx={{ "& .MuiMenu-paper": { width: 200 } }}
       >
         <MenuItem
-          // onClick={() => {
-          //   setAnchorEl2(null);
-          //   router.push("/profile");
-          // }}
+          onClick={() => {
+            setAnchorEl2(null);
+            router.push("/profiles");
+          }}
         >
           <ListItemIcon>
             <IconUser width={20} />

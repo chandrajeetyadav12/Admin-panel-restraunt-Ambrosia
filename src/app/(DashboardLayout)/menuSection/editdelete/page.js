@@ -115,7 +115,7 @@ export default function MenuSectionsPage() {
         error?.response?.data?.message ||
         "Failed to delete menu section";
       toast.error(message);
-      console.error(error);
+      // console.error(error);
     }
   };
 
