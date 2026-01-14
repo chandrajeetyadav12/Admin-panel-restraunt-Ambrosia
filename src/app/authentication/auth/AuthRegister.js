@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { Box, Typography, Button, MenuItem } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useForm, Controller } from "react-hook-form";
@@ -21,7 +19,6 @@ const schema = yup.object({
     .string()
     .min(6, "Minimum 6 characters")
     .required("Password is required"),
-  role: yup.string().required("Role is required"),
   image: yup.mixed().nullable(),
 });
 
@@ -38,7 +35,7 @@ const AuthRegister = ({ title, subtext, subtitle }) => {
       name: "",
       email: "",
       password: "",
-      role: "user",
+      // role: "user",
       image: null,
     },
   });
@@ -53,7 +50,6 @@ const AuthRegister = ({ title, subtext, subtitle }) => {
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("password", data.password);
-      formData.append("role", data.role);
 
       if (data.image && data.image.length > 0) {
         formData.append("image", data.image[0]);
@@ -125,21 +121,7 @@ const AuthRegister = ({ title, subtext, subtitle }) => {
             <Typography color="error">{errors.password.message}</Typography>
           )}
 
-          {/* ROLE */}
-          <Typography mt={2}>Role</Typography>
-          <Controller
-            name="role"
-            control={control}
-            render={({ field }) => (
-              <CustomTextField select fullWidth {...field}>
-                <MenuItem value="user">User</MenuItem>
-                <MenuItem value="admin">Admin</MenuItem>
-              </CustomTextField>
-            )}
-          />
-          {errors.role && (
-            <Typography color="error">{errors.role.message}</Typography>
-          )}
+
 
           {/* IMAGE */}
           <Typography mt={2}>Profile Image</Typography>
