@@ -106,7 +106,7 @@ const pathname = usePathname();
             setAnchorEl2(null);
             // router.push("/profiles");
             if (pathname === "/profiles") {
-              router.push("/")
+              router.push("/components/admindashboard")
             } else {
               router.push("/profiles");
             }

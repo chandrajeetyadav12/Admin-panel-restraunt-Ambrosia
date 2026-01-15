@@ -37,13 +37,6 @@ const [isLoggedIn, setIsLoggedIn] = useState(
       setIsLoggedIn(!!token);
     }
   }, []);
-//   const isLoggedIn =
-//     typeof window !== "undefined" &&!!localStorage.getItem("token");
-// const role =
-//   typeof window !== "undefined"
-//     ? localStorage.getItem("role"): null;
-
-
   //  LOGOUT HANDLER
   const handleLogout = async () => {
     try {
