@@ -19,7 +19,7 @@ const Dashboard = () => {
               xs: 12,
               lg: 12
             }}>
-            <DashboardPage />
+            {/* <DashboardPage /> */}
           </Grid>
           {/* <Grid
             size={{

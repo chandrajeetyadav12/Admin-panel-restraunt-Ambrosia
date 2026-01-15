@@ -1,13 +1,11 @@
 "use client";
-
-import React from "react";
 import {
   Box,
   Typography,
   Button,
   Stack,
 } from "@mui/material";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -60,7 +58,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
       //  SAVE TOKEN (OPTIONAL BUT RECOMMENDED)
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data));
+      localStorage.setItem("role", res.data.role);
 
       //  SUCCESS TOAST
       toast.success("Login successful");

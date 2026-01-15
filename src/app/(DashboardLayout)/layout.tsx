@@ -3,7 +3,6 @@ import { styled, Container, Box } from "@mui/material";
 import React, { useState, Activity } from "react";
 import Header from "@/app/(DashboardLayout)/layout/header/Header";
 import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
-
 const MainWrapper = styled("div")(() => ({
   display: "flex",
   minHeight: "100vh",
@@ -30,6 +29,7 @@ export default function RootLayout({
 }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
   return (
     <MainWrapper className="mainwrapper">
       {/* ------------------------------------------- */}

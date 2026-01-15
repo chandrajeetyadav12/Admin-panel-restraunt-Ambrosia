@@ -78,7 +78,7 @@ export default function CuisinesPage() {
             );
 
             //  Update UI using state (NO refetch needed)
-            toast.success("Item deleted successfully");
+            toast.success("Cuisine deleted successfully");
             setCuisines((prev) => prev.filter((item) => item._id !== id));
 
         } catch (error) {

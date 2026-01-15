@@ -13,14 +13,36 @@ import {
 import { IconPoint } from "@tabler/icons-react";
 
 import getMenuItems from "./MenuItems";
+import { useState,useEffect } from "react";
 
 const SidebarItems = () => {
   const pathname = usePathname();
   const router = useRouter();
+  // const [role, setRole] = useState<string | null>(null);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState<string | null>(
+  typeof window !== "undefined" ? localStorage.getItem("role") : null
+);
+const [isLoggedIn, setIsLoggedIn] = useState(
+  typeof window !== "undefined" && !!localStorage.getItem("token")
+);
 
-  const isLoggedIn =
-    typeof window !== "undefined" &&
-    !!localStorage.getItem("token");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedRole = localStorage.getItem("role");
+      console.log(storedRole)
+      const token = localStorage.getItem("token");
+
+      setRole(storedRole);
+      setIsLoggedIn(!!token);
+    }
+  }, []);
+//   const isLoggedIn =
+//     typeof window !== "undefined" &&!!localStorage.getItem("token");
+// const role =
+//   typeof window !== "undefined"
+//     ? localStorage.getItem("role"): null;
+
 
   //  LOGOUT HANDLER
   const handleLogout = async () => {
@@ -156,9 +178,10 @@ const SidebarItems = () => {
       </Box>
 
       {/* Menu */}
-      {renderMenuItems(getMenuItems(isLoggedIn))}
 
-    
+      {renderMenuItems(getMenuItems({ isLoggedIn, role }))}
+
+
     </MUI_Sidebar>
   );
 };

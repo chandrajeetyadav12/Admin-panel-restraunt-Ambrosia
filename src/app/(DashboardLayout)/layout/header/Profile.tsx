@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter,usePathname } from "next/navigation";
 import {
   Avatar,
   Box,
@@ -28,8 +28,8 @@ const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const router = useRouter();
+const pathname = usePathname();
 
-  
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -104,7 +104,12 @@ const Profile = () => {
         <MenuItem
           onClick={() => {
             setAnchorEl2(null);
-            router.push("/profiles");
+            // router.push("/profiles");
+            if (pathname === "/profiles") {
+              router.push("/")
+            } else {
+              router.push("/profiles");
+            }
           }}
         >
           <ListItemIcon>

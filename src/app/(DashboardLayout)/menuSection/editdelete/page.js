@@ -90,15 +90,15 @@ export default function MenuSectionsPage() {
       toast.error("Please login first");
       return;
     }
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "This will delete permanently cuisine, sections & menu items . Continue?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "Cancel",
-    });
-    if (!result.isConfirmed) return;
+    // const result = await Swal.fire({
+    //   title: "Are you sure?",
+    //   text: "Have you any  menu items? ,if yes please delete it first . Continue?",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonText: "Yes, delete",
+    //   cancelButtonText: "Cancel",
+    // });
+    // if (!result.isConfirmed) return;
 
     try {
       await axios.delete(`${API}/api/menuSection/${id}`,

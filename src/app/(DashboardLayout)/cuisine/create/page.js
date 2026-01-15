@@ -59,7 +59,6 @@ const CreateCuisine = ({ onClose, onCreated }) => {
       const message =
         error?.response?.data?.message ||
         "Failed to create cuisine";
-
       toast.error(message);
     }
 

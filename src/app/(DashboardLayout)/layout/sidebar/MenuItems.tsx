@@ -10,8 +10,11 @@ import {
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
-
- const getMenuItems = (isLoggedIn: boolean) => [
+type MenuArgs = {
+  isLoggedIn: boolean;
+  role: string | null;
+};
+ const getMenuItems = ({ isLoggedIn, role }: MenuArgs) => [
   {
     navlabel: true,
     subheader: "HOME",
@@ -21,54 +24,30 @@ import { uniqueId } from "lodash";
     id: uniqueId(),
     title: "Dashboard",
     icon: IconLayoutDashboard,
-    href: "/",
+    href: "/components/admindashboard",
+    roles: ["admin"],
   },
     {
     id: uniqueId(),
     title: "Cuisine",
     icon: IconTypography,
     href: "/cuisine/editdelete",
+    roles: ["admin"],
   },
       {
     id: uniqueId(),
     title: "MenuSection",
     icon: IconMoodHappy,
     href: "/menuSection/editdelete",
+    roles: ["admin"],
   },
       {
     id: uniqueId(),
     title: "Menu Items",
     icon: IconAperture,
     href: "/menuItem/editdelete",
+    roles: ["admin"],
   },
-  //       {
-  //   id: uniqueId(),
-  //   title: "AddMenuItem",
-  //   icon: IconAperture,
-  //   href: "/menuItem/createMenuItem",
-  // },
-  //     {
-  //   id: uniqueId(),
-  //   title: "AddMenuItems",
-  //   icon: IconLayoutDashboard,
-  //   href: "/",
-  // },
-  // {
-  //   navlabel: true,
-  //   subheader: "UTILITIES ",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Typography",
-  //   icon: IconTypography,
-  //   href: "/utilities/typography",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Shadow",
-  //   icon: IconCopy,
-  //   href: "/utilities/shadow",
-  // },
   {
     navlabel: true,
     subheader: "AUTH",
@@ -91,24 +70,13 @@ import { uniqueId } from "lodash";
     icon: IconLogout,
     action: "logout",
   },
-  // {
-  //   navlabel: true,
-  //   subheader: " EXTRA",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Icons",
-  //   icon: IconMoodHappy,
-  //   href: "/icons",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Sample Page",
-  //   icon: IconAperture,
-  //   href: "/sample-page",
-  // },
 
-].filter(Boolean);
+].filter(Boolean)
+ .filter((item: any) => {
+    if (item.show === false) return false;
+    if (item.roles && !item.roles.includes(role || "")) return false;
+    return true;
+ });
 
 export default getMenuItems;
 
